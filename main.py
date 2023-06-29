@@ -1,7 +1,9 @@
 # Importing required libraries
 import pygame
-import math
 from queue import PriorityQueue
+
+# Initializing Pygame
+pygame.init()
 
 # Setting up window
 WIDTH = 800
@@ -15,9 +17,10 @@ BLACK = (0, 0, 0)
 GREEN = (51, 255, 0)
 RED = (255, 0, 0)
 NAVY_BLUE = (0, 22, 82)
-GREY = (61, 61, 61)
+GRAY = (61, 61, 61)
 DARK_LIME = (127, 156, 2)
 BLUE = (10, 26, 252)
+LIGHT_GRAY = (176, 176, 176)
 
 # Setting up the grid functionality
 class Spot:
@@ -156,9 +159,9 @@ def make_grid(rows, width):
 def draw_grid(window, rows, width):
     gap = width // rows
     for i in range(rows):
-        pygame.draw.line(window, GREY, (0, i *  gap), (width, i * gap))
+        pygame.draw.line(window, GRAY, (0, i *  gap), (width, i * gap))
         for j in range(width):
-            pygame.draw.line(window, GREY, (j *  gap, 0), (j  * gap, width))
+            pygame.draw.line(window, GRAY, (j *  gap, 0), (j  * gap, width))
 
 def draw(window, grid, rows, width):
     window.fill(WHITE)
@@ -175,13 +178,70 @@ def get_clicked_pos(mouse_pos, rows, width):
     col = x // gap
     return row, col
 
+def controls_screen(window):
+    running = True
+    while running:
+        bg = pygame.image.load("controls_screen.png")
+        window.blit(bg, (0, 0))
+        
+        # Back to menu button
+        back_to_menu_image = pygame.transform.scale(pygame.image.load("back_to_menu.png"), (400, 100))
+        back_to_menu_rect = back_to_menu_image.get_rect()
+        back_to_menu_rect.center = (400, 700)
+        window.blit(back_to_menu_image, back_to_menu_rect)
+        pygame.display.update()
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if back_to_menu_rect.collidepoint(event.pos):
+                    intro_screen(WINDOW)
+                    running = False
+
+    pygame.quit()
+
+def intro_screen(window):
+    running = True
+    while running:
+
+        # Intro screen background
+        bg = pygame.image.load("intro screen.png")
+        window.blit(bg, (0,0))
+
+        # Play button
+        play_image = pygame.transform.scale(pygame.image.load("play.png"), (400, 100))
+        play_image_rect = play_image.get_rect()
+        play_image_rect.center = (250,500)
+        window.blit(play_image, play_image_rect)
+
+        # Controls button
+        controls_image =  pygame.transform.scale(pygame.image.load("controls.png"), (400, 100))
+        controls_image_rect = controls_image.get_rect()
+        controls_image_rect.center = (500, 650)
+        window.blit(controls_image, controls_image_rect)
+        pygame.display.update()
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if play_image_rect.collidepoint(event.pos):
+                    main(WINDOW, WIDTH)
+                    running = False
+                if controls_image_rect.collidepoint(event.pos):
+                    controls_screen(WINDOW)
+                    running = False
+    
+    pygame.quit()
+
+
 def main(window, width):
     ROWS = 50
     grid = make_grid(ROWS, width)
     start = None
     end = None
     running = True
-    started = False
     while running:
         draw(window, grid, ROWS, width)
         for event in pygame.event.get():
@@ -224,4 +284,5 @@ def main(window, width):
     pygame.quit()
 
 
-main(WINDOW, WIDTH)
+# main(WINDOW, WIDTH)
+intro_screen(WINDOW)
