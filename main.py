@@ -283,6 +283,4 @@ def main(window, width):
 
     pygame.quit()
 
-
-# main(WINDOW, WIDTH)
 intro_screen(WINDOW)
