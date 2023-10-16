@@ -6,3 +6,5 @@ I used the A* Path Finding Algorithm and pygame to build this GUI maze solver! Y
 - SPACE - To begin the solve
 - LEFT CLICK - First two left clicks place the start and end point, and the rest of the left clicks place barriers
 - RIGHT CLICK - To erase
+
+# View full project tutorial on my YouTube Channel: https://www.youtube.com/watch?v=o3v_G5nw9C0
